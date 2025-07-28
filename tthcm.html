@@ -1,0 +1,562 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lộ trình Data Career - Big4 Vietnam</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            font-family: 'Arial', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            overflow-x: auto;
+        }
+
+        .timeline-container {
+            max-width: 1600px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .title {
+            text-align: center;
+            color: white;
+            font-size: 32px;
+            font-weight: bold;
+            margin-bottom: 40px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+
+        .subtitle {
+            text-align: center;
+            color: rgba(255, 255, 255, 0.9);
+            font-size: 18px;
+            margin-bottom: 50px;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.3);
+        }
+
+        .timeline {
+            position: relative;
+            margin: 50px 0;
+        }
+
+        .timeline-line {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 4px;
+            height: 100%;
+            background: linear-gradient(to bottom, #fff, rgba(255, 255, 255, 0.5));
+            border-radius: 2px;
+            z-index: 1;
+        }
+
+        .timeline-item {
+            position: relative;
+            margin: 80px 0;
+            display: flex;
+            align-items: center;
+        }
+
+        .timeline-item:nth-child(even) {
+            flex-direction: row-reverse;
+        }
+
+        .timeline-dot {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #fff;
+            border: 4px solid #ff6b6b;
+            z-index: 10;
+            box-shadow: 0 0 20px rgba(255, 107, 107, 0.5);
+        }
+
+        .timeline-content {
+            width: 45%;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 25px;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+            backdrop-filter: blur(10px);
+            position: relative;
+            transition: all 0.3s ease;
+        }
+
+        .timeline-content:hover {
+            transform: scale(1.02);
+            box-shadow: 0 20px 45px rgba(0, 0, 0, 0.25);
+        }
+
+        .timeline-content::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            width: 0;
+            height: 0;
+            border: 15px solid transparent;
+        }
+
+        .timeline-item:nth-child(odd) .timeline-content::before {
+            right: -30px;
+            border-left-color: rgba(255, 255, 255, 0.95);
+            transform: translateY(-50%);
+        }
+
+        .timeline-item:nth-child(even) .timeline-content::before {
+            left: -30px;
+            border-right-color: rgba(255, 255, 255, 0.95);
+            transform: translateY(-50%);
+        }
+
+        .year-badge {
+            display: inline-block;
+            background: linear-gradient(135deg, #ff6b6b, #ee5a24);
+            color: white;
+            padding: 8px 20px;
+            border-radius: 25px;
+            font-weight: bold;
+            font-size: 16px;
+            margin-bottom: 15px;
+            box-shadow: 0 5px 15px rgba(255, 107, 107, 0.3);
+        }
+
+        .phase-title {
+            font-size: 20px;
+            font-weight: bold;
+            color: #333;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .phase-icon {
+            font-size: 28px;
+        }
+
+        .goals-section {
+            margin-bottom: 20px;
+        }
+
+        .section-title {
+            font-weight: bold;
+            color: #555;
+            font-size: 14px;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .goals-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+
+        .goal-item {
+            background: linear-gradient(135deg, #74b9ff, #0984e3);
+            color: white;
+            padding: 12px;
+            border-radius: 10px;
+            font-size: 12px;
+            text-align: center;
+            box-shadow: 0 5px 15px rgba(116, 185, 255, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .goal-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(116, 185, 255, 0.4);
+        }
+
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 10px;
+        }
+
+        .skill-item {
+            background: linear-gradient(135deg, #00b894, #00a085);
+            color: white;
+            padding: 10px;
+            border-radius: 8px;
+            font-size: 11px;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(0, 184, 148, 0.3);
+        }
+
+        .actions-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 10px;
+        }
+
+        .action-item {
+            background: linear-gradient(135deg, #fdcb6e, #e17055);
+            color: white;
+            padding: 10px;
+            border-radius: 8px;
+            font-size: 11px;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(253, 203, 110, 0.3);
+        }
+
+        .milestone-item {
+            background: linear-gradient(135deg, #a29bfe, #6c5ce7);
+            color: white;
+            padding: 10px;
+            border-radius: 8px;
+            font-size: 11px;
+            text-align: center;
+            box-shadow: 0 4px 12px rgba(162, 155, 254, 0.3);
+        }
+
+        .big4-target {
+            background: linear-gradient(135deg, #ff7675, #d63031);
+            color: white;
+            padding: 20px;
+            border-radius: 15px;
+            text-align: center;
+            margin-top: 50px;
+            box-shadow: 0 15px 35px rgba(255, 118, 117, 0.3);
+        }
+
+        .big4-title {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        .big4-companies {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .company-item {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 15px;
+            border-radius: 10px;
+            font-weight: bold;
+            backdrop-filter: blur(5px);
+        }
+
+        @media (max-width: 768px) {
+            .timeline-item {
+                flex-direction: column !important;
+            }
+            
+            .timeline-content {
+                width: 90%;
+                margin: 20px 0;
+            }
+            
+            .timeline-content::before {
+                display: none;
+            }
+            
+            .timeline-line {
+                left: 30px;
+            }
+            
+            .timeline-dot {
+                left: 30px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="timeline-container">
+        <div class="title">📈 Lộ Trình Data Career - Big4 Vietnam</div>
+        <div class="subtitle">🎯 Kế hoạch 4 năm đại học + hậu tốt nghiệp</div>
+
+        <div class="timeline">
+            <div class="timeline-line"></div>
+
+            <!-- Năm 1 -->
+            <div class="timeline-item">
+                <div class="timeline-dot"></div>
+                <div class="timeline-content">
+                    <div class="year-badge">NĂM 1 📚</div>
+                    <div class="phase-title">
+                        <span class="phase-icon">🌱</span>
+                        <span>Xây Dựng Nền Tảng</span>
+                    </div>
+                    
+                    <div class="goals-section">
+                        <div class="section-title">🎯 Mục Tiêu Chính</div>
+                        <div class="goals-grid">
+                            <div class="goal-item">📊 Học cơ bản về Data</div>
+                            <div class="goal-item">💻 Làm quen lập trình</div>
+                            <div class="goal-item">📐 Nắm vững Toán - Thống kê</div>
+                        </div>
+                    </div>
+
+                    <div class="goals-section">
+                        <div class="section-title">🛠️ Kỹ Năng Cần Học</div>
+                        <div class="skills-grid">
+                            <div class="skill-item">Python cơ bản 🐍</div>
+                            <div class="skill-item">SQL căn bản 🗃️</div>
+                            <div class="skill-item">Excel nâng cao 📊</div>
+                            <div class="skill-item">Statistics 101 📈</div>
+                            <div class="skill-item">Linear Algebra 🔢</div>
+                        </div>
+                    </div>
+
+                    <div class="goals-section">
+                        <div class="section-title">⚡ Hành Động Cụ Thể</div>
+                        <div class="actions-grid">
+                            <div class="action-item">Coursera Python 🎓</div>
+                            <div class="action-item">Codecademy SQL 💾</div>
+                            <div class="action-item">Khan Academy Stats 📊</div>
+                            <div class="action-item">Tham gia CLB IT 👥</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Năm 2 -->
+            <div class="timeline-item">
+                <div class="timeline-dot"></div>
+                <div class="timeline-content">
+                    <div class="year-badge">NĂM 2 🚀</div>
+                    <div class="phase-title">
+                        <span class="phase-icon">🔧</span>
+                        <span>Phát Triển Kỹ Năng</span>
+                    </div>
+                    
+                    <div class="goals-section">
+                        <div class="section-title">🎯 Mục Tiêu Chính</div>
+                        <div class="goals-grid">
+                            <div class="goal-item">🤖 Học Machine Learning</div>
+                            <div class="goal-item">📈 Data Visualization</div>
+                            <div class="goal-item">💼 Hiểu Business Context</div>
+                        </div>
+                    </div>
+
+                    <div class="goals-section">
+                        <div class="section-title">🛠️ Kỹ Năng Cần Học</div>
+                        <div class="skills-grid">
+                            <div class="skill-item">Pandas & Numpy 🐼</div>
+                            <div class="skill-item">Matplotlib/Seaborn 📊</div>
+                            <div class="skill-item">Scikit-learn 🤖</div>
+                            <div class="skill-item">Tableau Desktop 📈</div>
+                            <div class="skill-item">Git & GitHub 🔗</div>
+                        </div>
+                    </div>
+
+                    <div class="goals-section">
+                        <div class="section-title">🏆 Milestone</div>
+                        <div class="actions-grid">
+                            <div class="milestone-item">3-5 Data Projects 📁</div>
+                            <div class="milestone-item">GitHub Portfolio 💻</div>
+                            <div class="milestone-item">Kaggle Competitions 🏅</div>
+                            <div class="milestone-item">Blog về Data 📝</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Năm 3 -->
+            <div class="timeline-item">
+                <div class="timeline-dot"></div>
+                <div class="timeline-content">
+                    <div class="year-badge">NĂM 3 💼</div>
+                    <div class="phase-title">
+                        <span class="phase-icon">🎯</span>
+                        <span>Chuyên Sâu & Thực Hành</span>
+                    </div>
+                    
+                    <div class="goals-section">
+                        <div class="section-title">🎯 Mục Tiêu Chính</div>
+                        <div class="goals-grid">
+                            <div class="goal-item">🏢 Thực tập tại công ty</div>
+                            <div class="goal-item">🧠 Deep Learning</div>
+                            <div class="goal-item">☁️ Cloud Technologies</div>
+                        </div>
+                    </div>
+
+                    <div class="goals-section">
+                        <div class="section-title">🛠️ Kỹ Năng Cần Học</div>
+                        <div class="skills-grid">
+                            <div class="skill-item">TensorFlow/PyTorch 🔥</div>
+                            <div class="skill-item">AWS/Azure ☁️</div>
+                            <div class="skill-item">Apache Spark ⚡</div>
+                            <div class="skill-item">Docker 🐳</div>
+                            <div class="skill-item">Power BI 📊</div>
+                            <div class="skill-item">Business Analysis 💡</div>
+                        </div>
+                    </div>
+
+                    <div class="goals-section">
+                        <div class="section-title">⚡ Hành Động Cụ Thể</div>
+                        <div class="actions-grid">
+                            <div class="action-item">Internship tại Startup 🚀</div>
+                            <div class="action-item">Freelance Projects 💰</div>
+                            <div class="action-item">Conference/Meetups 🎤</div>
+                            <div class="action-item">Mentor junior 👨‍🏫</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Năm 4 -->
+            <div class="timeline-item">
+                <div class="timeline-dot"></div>
+                <div class="timeline-content">
+                    <div class="year-badge">NĂM 4 🎓</div>
+                    <div class="phase-title">
+                        <span class="phase-icon">🏆</span>
+                        <span>Chuẩn Bị Big4</span>
+                    </div>
+                    
+                    <div class="goals-section">
+                        <div class="section-title">🎯 Mục Tiêu Chính</div>
+                        <div class="goals-grid">
+                            <div class="goal-item">🏢 Apply Big4 Internship</div>
+                            <div class="goal-item">📜 Certifications</div>
+                            <div class="goal-item">🎯 Portfolio Hoàn Thiện</div>
+                        </div>
+                    </div>
+
+                    <div class="goals-section">
+                        <div class="section-title">🏅 Certifications</div>
+                        <div class="skills-grid">
+                            <div class="skill-item">AWS Certified 🏅</div>
+                            <div class="skill-item">Google Analytics 📊</div>
+                            <div class="skill-item">Microsoft Azure 💠</div>
+                            <div class="skill-item">Tableau Desktop 📈</div>
+                            <div class="skill-item">PMP/Agile 📋</div>
+                        </div>
+                    </div>
+
+                    <div class="goals-section">
+                        <div class="section-title">🎯 Chuẩn Bị Interview</div>
+                        <div class="actions-grid">
+                            <div class="action-item">Mock Interviews 🎤</div>
+                            <div class="action-item">Case Study Practice 📊</div>
+                            <div class="action-item">LinkedIn Networking 🤝</div>
+                            <div class="action-item">Big4 Events 🏢</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sau Tốt Nghiệp -->
+            <div class="timeline-item">
+                <div class="timeline-dot"></div>
+                <div class="timeline-content">
+                    <div class="year-badge">SAU TN 🌟</div>
+                    <div class="phase-title">
+                        <span class="phase-icon">🏢</span>
+                        <span>Gia Nhập Big4</span>
+                    </div>
+                    
+                    <div class="goals-section">
+                        <div class="section-title">🎯 Vị Trí Mục Tiêu</div>
+                        <div class="goals-grid">
+                            <div class="goal-item">📊 Data Analyst</div>
+                            <div class="goal-item">🤖 Data Scientist</div>
+                            <div class="goal-item">⚙️ Data Engineer</div>
+                            <div class="goal-item">💼 Business Analyst</div>
+                            <div class="goal-item">🎯 Data Consultant</div>
+                        </div>
+                    </div>
+
+                    <div class="goals-section">
+                        <div class="section-title">🧠 Soft Skills</div>
+                        <div class="skills-grid">
+                            <div class="skill-item">Communication 💬</div>
+                            <div class="skill-item">Presentation 🎤</div>
+                            <div class="skill-item">Critical Thinking 🤔</div>
+                            <div class="skill-item">Problem Solving 🧩</div>
+                            <div class="skill-item">Leadership 👑</div>
+                            <div class="skill-item">Client Management 🤝</div>
+                        </div>
+                    </div>
+
+                    <div class="goals-section">
+                        <div class="section-title">📈 Career Growth</div>
+                        <div class="actions-grid">
+                            <div class="action-item">Senior Consultant 📊</div>
+                            <div class="action-item">Manager 👔</div>
+                            <div class="action-item">Director 🎯</div>
+                            <div class="action-item">Partner 👑</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="big4-target">
+            <div class="big4-title">🎯 TARGET: BIG4 VIETNAM</div>
+            <p>Mục tiêu cuối cùng - Gia nhập một trong những công ty Big4 hàng đầu tại Việt Nam</p>
+            <div class="big4-companies">
+                <div class="company-item">
+                    <div>🏢 PwC Vietnam</div>
+                    <small>Advisory Services</small>
+                </div>
+                <div class="company-item">
+                    <div>📊 Deloitte Vietnam</div>
+                    <small>Consulting</small>
+                </div>
+                <div class="company-item">
+                    <div>💡 EY Vietnam</div>
+                    <small>Technology Risk</small>
+                </div>
+                <div class="company-item">
+                    <div>📈 KPMG Vietnam</div>
+                    <small>Data & Analytics</small>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Add scroll-triggered animations
+        function animateOnScroll() {
+            const timelineItems = document.querySelectorAll('.timeline-content');
+            
+            timelineItems.forEach(item => {
+                const rect = item.getBoundingClientRect();
+                const isVisible = rect.top < window.innerHeight && rect.bottom > 0;
+                
+                if (isVisible) {
+                    item.style.opacity = '1';
+                    item.style.transform = 'translateY(0)';
+                } else {
+                    item.style.opacity = '0.3';
+                    item.style.transform = 'translateY(20px)';
+                }
+            });
+        }
+
+        // Initialize styles
+        document.querySelectorAll('.timeline-content').forEach(item => {
+            item.style.transition = 'all 0.6s ease';
+        });
+
+        // Add event listeners
+        window.addEventListener('scroll', animateOnScroll);
+        window.addEventListener('load', animateOnScroll);
+
+        // Add click interactions
+        document.querySelectorAll('.goal-item, .skill-item, .action-item, .milestone-item').forEach(item => {
+            item.addEventListener('click', function() {
+                this.style.transform = 'scale(0.95)';
+                setTimeout(() => {
+                    this.style.transform = 'scale(1)';
+                }, 150);
+            });
+        });
+    </script>
+</body>
+</html>
